@@ -1,6 +1,7 @@
 package com.example.secpart3.security;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -23,8 +24,7 @@ public class WebSecurityConfiguration {
         public MyUserDetailsService userDetailsService;
         @Autowired
         public BCryptPasswordEncoder passwordEncoder;
-        @Autowired
-        public AuthenticationManager authenticationManager;
+
         @Bean
         public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
                 return authenticationConfiguration.getAuthenticationManager();
