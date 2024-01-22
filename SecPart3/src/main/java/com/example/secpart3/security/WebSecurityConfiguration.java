@@ -1,5 +1,6 @@
 package com.example.secpart3.security;
 
+import com.example.secpart3.filters.JwtTokenFilter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -15,6 +16,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -24,6 +26,8 @@ public class WebSecurityConfiguration {
         public MyUserDetailsService userDetailsService;
         @Autowired
         public BCryptPasswordEncoder passwordEncoder;
+        @Autowired
+        public JwtTokenFilter jwtTokenFilter;
 
         @Bean
         public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
@@ -47,6 +51,7 @@ public class WebSecurityConfiguration {
                         // setting stateless session, because we choose to implement Rest API
                         .and().sessionManagement()
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                httpSecurity.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
             return httpSecurity.build();
         }
 
